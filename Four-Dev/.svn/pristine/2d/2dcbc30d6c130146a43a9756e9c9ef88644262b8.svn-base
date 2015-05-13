@@ -1,0 +1,35 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class PowerPlant : Building {
+	public float storedEnergy = 0;
+	public float energyPerSecond = 40f;
+	int amountPerLoad = 100;
+	// Use this for initialization
+	void Start () {
+		InvokeRepeating("SpawnOutput",0f,1f);
+		float randomStart = Random.Range(0,2f);
+		InvokeRepeating("MaintainStocks",randomStart,1f);
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		storedEnergy += energyPerSecond*Time.deltaTime;
+	}
+
+	void SpawnOutput()
+	{
+		if(storedEnergy >= amountPerLoad)
+		{
+			var fullCells = resourceProfiles.Find(x => x.name == "Energy Cell (full)").GetComponent("ResourceProfile") as ResourceProfile;
+			var emptyCells = resourceProfiles.Find(x => x.name == "Energy Cell (empty)").GetComponent("ResourceProfile") as ResourceProfile;
+
+			if ( emptyCells.amount > 0) 
+			{
+				emptyCells.amount -= 1;
+				fullCells.amount += 1;
+				storedEnergy -= amountPerLoad;
+			}
+		}
+	}
+}

@@ -1,0 +1,45 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class PauseMenu : MonoBehaviour {
+	public bool showMenu = false;
+	
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+	
+	void OnGUI()
+	{
+
+		if(showMenu)
+		{
+			GUI.Box(new Rect(-10, -10, Screen.width+20, Screen.height+20), "");
+		}
+
+		if(Event.current.type == EventType.layout){
+			if(Input.GetKeyDown("escape"))
+			{
+				Object[] objects = FindObjectsOfType (typeof(GameObject));
+				string message;
+				if(showMenu == false)
+				{
+					message = "OnPause";
+				}
+				else {
+					message = "OnResume";
+				}
+
+				foreach (GameObject go in objects) {
+					go.SendMessage (message, SendMessageOptions.DontRequireReceiver);
+				}
+				showMenu = !showMenu;
+			}
+		}
+	}
+}

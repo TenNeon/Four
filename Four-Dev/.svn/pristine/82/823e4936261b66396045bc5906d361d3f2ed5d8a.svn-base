@@ -1,0 +1,25 @@
+﻿using UnityEngine;
+using System.Collections;
+using Vectrosity;
+
+public class SelectionIndicator : MonoBehaviour {
+	public Texture2D selectionIndicatorTexture;
+	public static SelectionIndicator main;
+
+	void Start()
+	{
+		if(main == null)
+		{
+			main = this;
+		}
+	}
+	
+	void OnGUI()
+	{
+		foreach (var item in SelectionBox.main.selectedObjects) {
+			var pos = Camera.main.WorldToScreenPoint(item.transform.position);
+			Rect rect = new Rect(pos.x-10,Screen.height-pos.y-10,20,20);
+			GUI.DrawTexture(rect,selectionIndicatorTexture);
+		}
+	}
+}
